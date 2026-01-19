@@ -21,16 +21,16 @@ jobs:
           MONTH=$(date -u +%Y%m)
 
           # Find existing tags for this month
-          EXISTING=$(git tag -l "${MONTH}-*" | sort -V | tail -1)
+          EXISTING=$(git tag -l "v${MONTH}-*" | sort -V | tail -1)
 
           if [ -z "$EXISTING" ]; then
             # No tags for this month yet
-            echo "name=${MONTH}-00" >> $GITHUB_OUTPUT
+            echo "name=v${MONTH}-00" >> $GITHUB_OUTPUT
           else
             # Increment the suffix
-            SUFFIX=$(echo "$EXISTING" | sed "s/${MONTH}-//")
+            SUFFIX=$(echo "$EXISTING" | sed "s/v${MONTH}-//")
             NEXT=$(printf "%02d" $((10#$SUFFIX + 1)))
-            echo "name=${MONTH}-${NEXT}" >> $GITHUB_OUTPUT
+            echo "name=v${MONTH}-${NEXT}" >> $GITHUB_OUTPUT
           fi
 
       - name: Create and push tag
